@@ -801,6 +801,7 @@ Field	Value
 SMTP Server	smtp.gmail.com
 SMTP Port	465
 Use SSL	Enabled
+TCL 587
 Credentials	Add Gmail ID and App Password as Jenkins credentials
 Default Content Type	text/html or leave default
 Default Recipients	Leave empty or provide default emails
@@ -942,5 +943,6 @@ pipeline {
         }
     }
 }
+
 
 
