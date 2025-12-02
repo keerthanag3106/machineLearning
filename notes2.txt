@@ -527,35 +527,40 @@ II. Maven Web Automation Steps:
 
 //A9
 //normal script without deploy
-pipeline {
+pipeline{
     agent any
     tools{
         maven 'MAVEN_HOME'
     }
-    stages {
-        stage('git repo & clean') {
-            steps {
-                deleteDir()
-                //bat "rmdir  /s /q MavenJavaProj"
-                bat "git clone https://github.com/keerthanag3106/cms.git" 
+    stages{
+        stage('git repo & clean'){
+            steps{
+                bat 'rmdir /s /q cms'
+                bat "git clone https://github.com/keerthanag3106/cms.git"
                 bat "mvn clean -f cms"
             }
         }
-        stage('install') {
-            steps {
-                bat "mvn install -f cms" 
+        stage('install'){
+            steps{
+                bat "mvn install -f cms"
             }
         }
-        stage('test') {
-            steps {
+        stage('test'){
+            steps{
                 bat "mvn test -f cms"
             }
         }
-        stage('package') {
-            steps {
+        stage('package'){
+            steps{
                 bat "mvn package -f cms"
             }
         }
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'cms/target/CMS.war', fingerprint: true
+            }
+        }
+
     }
 }
 //normal script with deploy
@@ -956,6 +961,7 @@ pipeline {
 <role rolename="manager-gui"/>
   <role rolename="manager-script"/>
   <user username="admin" password="1234" roles="manager-gui,manager-script"/>
+
 
 
 
