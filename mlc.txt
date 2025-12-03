@@ -1,3 +1,169 @@
+Deep learning is a branch of machine learning inspired by the human brain.
+
+It uses artificial neural networks with many layers to learn patterns from data.
+
+These layers automatically extract features without manual programming.
+
+Deep learning works best with large amounts of data.
+
+It is widely used in image recognition, speech processing, and natural language understanding.
+
+Neural networks learn by adjusting weights during training.
+
+Backpropagation is the algorithm used to update these weights.
+
+Activation functions introduce non-linearity into the model.
+
+Convolutional Neural Networks (CNNs) are used for image processing.
+
+Recurrent Neural Networks (RNNs) handle sequence data like text or speech.
+
+Long Short-Term Memory (LSTM) networks solve long-term dependency problems.
+
+Transformers are the latest architecture for text and language tasks.
+
+Deep learning models often require GPUs for faster training.
+
+They perform better as the number of layers increases.
+
+Overfitting is a common issue when the model learns noise instead of patterns.
+
+Regularization techniques help prevent overfitting.
+
+Deep learning enables smart assistants, chatbots, and self-driving cars.
+
+It can automatically detect objects, faces, and emotions.
+
+Deep learning models improve with more data and better architecture.
+
+It is a powerful tool that continues to transform modern AI applications.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 1.Create a Maven Normal Project in Eclipse
 Click File → New → Project
 Select Maven → Maven Project
@@ -406,3 +572,4 @@ Open browser:http://localhost:3000
 to stop:
 docker ps
 docker-compose down
+
