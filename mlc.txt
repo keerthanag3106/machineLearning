@@ -1,0 +1,408 @@
+1.Create a Maven Normal Project in Eclipse
+Click File → New → Project
+Select Maven → Maven Project
+Select Create a simple project (skip archetype selection)
+Fill these:
+Group Id: com.example
+Artifact Id: HelloMavenApp
+Version: 1.0-SNAPSHOT (default)
+Packaging: jar
+Click Finish
+
+Right-click src/main/java
+click new->other-->java-->class-->Package:com.example-->class Name:App
+package com.example;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello Maven from Eclipse!");
+    }
+}
+
+pom.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>HelloMavenApp</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+	<build>
+	    <plugins>
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-jar-plugin</artifactId>
+	            <version>3.3.0</version>
+	            <configuration>
+	                <archive>
+	                    <manifest>
+	                        <mainClass>com.example.App</mainClass>
+	                    </manifest>
+	                </archive>
+	            </configuration>
+	        </plugin>
+	    </plugins>
+	</build>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+</project>
+
+clean
+install
+build
+run config
+goals-clean package
+jar file is created in target folder
+git remote -v
+if(anything comes) then git remote remove origin
+then git remote add origin "repo_name"
+git add .
+git commit -m "initial commit"
+git branch -M main
+git push -u origin main
+
+
+
+
+
+
+2.Create a Maven Web Application in Eclipse
+File → New → Project
+Select Maven → Maven Project
+Click Next
+Fill these:
+
+Group Id: com.example
+Artifact Id: HelloWebApp
+Version: 1.0-SNAPSHOT (default)
+Packaging: war
+Name: HelloWebApp
+
+src/main/java → New → Other → Java → Class
+Package: com.example
+Name: HelloServlet
+
+package com.example;
+
+import java.io.IOException;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+
+@WebServlet("/hello")
+public class HelloServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.getWriter().println("Hello from Maven Web App!");
+    }
+}
+
+src/main/webapp → WEB-INF → New → File → web.xml(create it if not there)
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+</web-app>
+
+
+pom.xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>HelloWebApp</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <!-- Servlet API -->
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Jetty Plugin -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.51.v20230217</version>
+
+                <configuration>
+                    <!-- Change port here -->
+                    <httpConnector>
+                        <port>9090</port>
+                    </httpConnector>
+
+                    <scanIntervalSeconds>5</scanIntervalSeconds>
+
+                    <webApp>
+                        <contextPath>/HelloWebApp</contextPath>
+                    </webApp>
+                </configuration>
+                
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
+clean
+install
+build
+run config
+goals-clean package
+war file is created in target folder
+git remote -v
+if(anything comes) then git remote remove origin
+then git remote add origin "repo_name"
+git add .
+git commit -m "initial commit"
+git branch -M main
+git push -u origin main
+
+to application in eclipse terminal write
+mvn jetty:run
+http://localhost:9090/HelloWebApp/hello--u will app here
+
+
+3.Create Multi Container of mysql and word press through Docker
+create this folder-->wordpress-mysql
+create a new file-->docker-compose.yml
+docke-compose.yml
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: wordpressdb
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppass
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_container
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppass
+      WORDPRESS_DB_NAME: wordpressdb
+    volumes:
+      - wordpress_data:/var/www/html
+
+volumes:
+  mysql_data:
+  wordpress_data:
+
+open cmd in this folder,then 
+docker login
+docker compose up -d
+(pulling process)
+docker ps
+then go to http://localhost:8081
+login there in wordpress
+docker compose down-->to stop
+Start Again Later-->docker compose up -d
+
+
+4.Illustrate the scaling of a container named mysql through Kubernetes.
+Open CMD or PowerShell and run:
+minikube start
+create a folder->k8s-mysql --> create file mysql-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root123
+ 
+
+go to that folder in cmd
+kubectl apply -f mysql-deployment.yaml
+kubectl get pods
+kubectl scale deployment mysql --replicas=3
+kubectl get pods
+kubectl scale deployment mysql --replicas=1
+kubectl get pods
+kubectl delete deployment mysql
+
+
+6.Write the Docker file and create the image and access the image in localhost
+mydockerapp/
+│── Dockerfile
+│── app.js
+│── package.json
+
+package.json
+{
+  "name": "mydockerapp",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
+
+app.js
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+    res.send("Hello from Docker!");
+});
+
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
+
+Dockrfile
+FROM node:18
+WORKDIR /app
+COPY package.json .
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["node", "app.js"]
+
+commands:
+docker build -t mydockerapp .
+docker images
+docker run -p 3000:3000 mydockerapp
+Open your browser and go to: http://localhost:3000
+docker ps
+docker stop <container-id>
+
+
+
+7.Create a Docker Compose setup with a Node.js app and MongoDB.
+docker-node-mongo/
+│── docker-compose.yml
+│── Dockerfile
+│── package.json
+│── app.js
+
+package.json
+{
+  "name": "dockernodemongo",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.0"
+  }
+}
+
+app.js
+const express = require("express");
+const mongoose = require("mongoose");
+const app = express();
+
+mongoose.connect("mongodb://mongo:27017/mydb")
+    .then(() => console.log("MongoDB Connected"))
+    .catch(err => console.log(err));
+
+app.get("/", (req, res) => {
+    res.send("Node.js + MongoDB using Docker Compose");
+});
+
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
+
+Dockerfile
+FROM node:18
+WORKDIR /app
+COPY package.json .
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["node", "app.js"]
+
+
+docker-compose.yml
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: node-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/mydb
+
+  mongo:
+    image: mongo:6
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+
+
+commands:
+docker-compose up --build
+Open browser:http://localhost:3000
+
+to stop:
+docker ps
+docker-compose down
